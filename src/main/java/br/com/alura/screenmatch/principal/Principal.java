@@ -2,12 +2,15 @@ package br.com.alura.screenmatch.principal;
 
 import br.com.alura.screenmatch.model.DadosSerie;
 import br.com.alura.screenmatch.model.DadosTemporada;
+import br.com.alura.screenmatch.model.Serie;
 import br.com.alura.screenmatch.service.ConsumoApi;
 import br.com.alura.screenmatch.service.ConverteDados;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -84,15 +87,13 @@ public class Principal {
     }
 
     private void listarSeriesBuscadas() {
-        listaSeries.forEach(System.out::println);
-    }
+        List<Serie> series = new ArrayList<>();
+        series = listaSeries.stream()
+                        .map(d -> new Serie(d))
+                        .collect(Collectors.toList());
 
-//    public static Categoria fromString(String text) {
-//        for (Categoria categoria : Categoria.values()) {
-//            if (categoria.categoriaOmdb.equalsIgnoreCase(text)) {
-//                return categoria;
-//            }
-//        }
-//        throw new IllegalArgumentException("Nenhuma categoria encontrada para a string fornecida: " + text);
-//    }
+        series.stream()
+                .sorted(Comparator.comparing(Serie::getGenero))
+                .forEach(System.out::println);
+    }
 }
